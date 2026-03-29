@@ -1,0 +1,24 @@
+﻿@model Thu5.Models.Ride
+
+<h2>Đang tìm tài xế...</h2>
+
+<p>@Model.Pickup → @Model.Destination</p>
+<p>Trạng thái: @Model.Status</p>
+
+<!-- GOOGLE MAPS ROUTE -->
+<iframe width="100%"
+        height="400"
+        style="border:0"
+        loading="lazy"
+        allowfullscreen
+        src="https://www.google.com/maps/embed/v1/directions?key=YOUR_API_KEY
+  &origin=@Model.CustomerLat,@Model.CustomerLng
+  &destination=@Model.DestinationLat,@Model.DestinationLng
+  &mode=driving">
+</iframe>
+
+<script>
+    setTimeout(() => {
+        location.reload();
+    }, 3000);
+</script>

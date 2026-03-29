@@ -1,0 +1,28 @@
+﻿<h2>Đặt xe</h2>
+
+<form method="post" action="/Ride/Book">
+    <input name="pickup" placeholder="Điểm đón" />
+    <input name="destination" placeholder="Điểm đến" />
+
+    <!-- GPS khách -->
+    <input type="hidden" name="lat" id="lat" />
+    <input type="hidden" name="lng" id="lng" />
+
+    <!-- GPS điểm đến (demo fix cứng) -->
+    <input type="hidden" name="destLat" id="destLat" />
+    <input type="hidden" name="destLng" id="destLng" />
+
+    <button type="submit">Đặt xe</button>
+</form>
+
+<script>
+    // Lấy GPS khách
+    navigator.geolocation.getCurrentPosition(function(position) {
+        document.getElementById("lat").value = position.coords.latitude;
+        document.getElementById("lng").value = position.coords.longitude;
+    });
+
+    // Demo: fix điểm đến (ví dụ Hà Nội)
+    document.getElementById("destLat").value = 21.0285;
+    document.getElementById("destLng").value = 105.8542;
+</script>

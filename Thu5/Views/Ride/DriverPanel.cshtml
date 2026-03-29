@@ -1,0 +1,45 @@
+﻿@model List<Thu5.Models.Ride>
+
+<h2>Tài xế</h2>
+
+@foreach (var ride in Model)
+{
+    <div style="border:1px solid black; margin:20px; padding:15px;">
+
+        <p><b>@ride.Pickup → @ride.Destination</b></p>
+        <p>Trạng thái: @ride.Status</p>
+
+        <!-- MAP ROUTE -->
+        @if (ride.CustomerLat != null && ride.DestinationLat != null)
+        {
+            <iframe width="100%"
+                    height="300"
+                    style="border:0"
+                    loading="lazy"
+                    allowfullscreen
+                    src="https://www.google.com/maps/embed/v1/directions?key=YOUR_API_KEY
+                      &origin=@ride.CustomerLat,@ride.CustomerLng
+                      &destination=@ride.DestinationLat,@ride.DestinationLng
+                      &mode=driving">
+            </iframe>
+        }
+
+        <br />
+
+        <!-- BUTTON -->
+        @if (ride.Status == "Searching")
+        {
+            <a href="/Ride/Accept/@ride.Id">✅ Nhận</a>
+            <a href="/Ride/DriverPanel">❌ Từ chối</a>
+        }
+        else if (ride.Status == "Accepted")
+        {
+            <a href="/Ride/Arrived/@ride.Id">📍 Đã đến điểm đón</a>
+        }
+        else if (ride.Status == "Arrived")
+        {
+            <a href="/Ride/Complete/@ride.Id">🏁 Hoàn thành</a>
+        }
+
+    </div>
+}
