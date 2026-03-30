@@ -14,7 +14,7 @@ namespace Thu5.Controllers
             _context = context;
         }
 
-        // ====== ĐĂNG KÝ ======
+        // ===== REGISTER =====
         public IActionResult Register()
         {
             return View();
@@ -23,27 +23,26 @@ namespace Thu5.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(user);
+
+            var exists = _context.Users.Any(u => u.Username == user.Username);
+
+            if (exists)
             {
-                // kiểm tra trùng username
-                var exists = _context.Users
-                    .Any(u => u.Username == user.Username);
-
-                if (exists)
-                {
-                    ViewBag.Error = "Tài khoản đã tồn tại";
-                    return View();
-                }
-
-                _context.Users.Add(user);
-                _context.SaveChanges();
-
-                return RedirectToAction("Login");
+                ViewBag.Error = "Tài khoản đã tồn tại";
+                return View(user);
             }
-            return View();
+
+            user.Role = "Customer";
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return RedirectToAction("Login", "Auth"); // 👈 QUAN TRỌNG
         }
 
-        // ====== ĐĂNG NHẬP ======
+        // ===== LOGIN =====
         public IActionResult Login()
         {
             return View();
@@ -53,26 +52,18 @@ namespace Thu5.Controllers
         public IActionResult Login(User user)
         {
             var check = _context.Users
-                .FirstOrDefault(u => u.Username == user.Username
-                                  && u.Password == user.Password);
+                .FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
 
             if (check != null)
             {
-                // lưu session
                 HttpContext.Session.SetString("Username", check.Username);
+                HttpContext.Session.SetString("UserId", check.Id.ToString());
 
-                return RedirectToAction("Index", "Ride");
+                return RedirectToAction("Index", "Ride"); // 👈 QUAN TRỌNG
             }
 
             ViewBag.Error = "Sai tài khoản hoặc mật khẩu";
             return View();
-        }
-
-        // ====== ĐĂNG XUẤT ======
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
         }
     }
 }

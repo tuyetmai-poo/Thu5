@@ -18,7 +18,7 @@ namespace Thu5.Controllers
         public IActionResult Index()
         {
             var messages = _context.Messages
-                                   .OrderBy(m => m.Time)
+                                   .OrderBy(m => m.Id)
                                    .ToList();
 
             return View(messages);

@@ -1,11 +1,14 @@
-﻿<h2>Đăng nhập</h2>
+﻿@model Thu5.Models.User
 
-<form method="post">
-    <label>Tài khoản</label>
-    <input type="text" name="Username" />
+<h2>Đăng nhập</h2>
 
-    <label>Mật khẩu</label>
-    <input type="password" name="Password" />
+<form asp-controller="Auth" asp-action="Login" method="post">
+
+    <input name="Username" placeholder="Username" />
+    <br />
+
+    <input name="Password" type="password" placeholder="Password" />
+    <br />
 
     <button type="submit">Đăng nhập</button>
 </form>
