@@ -1,37 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Thu5.Models;
+using Thu5.Data;
+using System.Linq;
 
 namespace Thu5.Controllers
 {
     public class ChatController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public ChatController(AppDbContext context)
         {
-            return View(Data.Messages);
+            _context = context;
         }
 
+        // ====== VIEW CHAT (KHÁCH) ======
+        public IActionResult Index()
+        {
+            var messages = _context.Messages
+                                   .OrderBy(m => m.Time)
+                                   .ToList();
+
+            return View(messages);
+        }
+
+        // ====== KHÁCH GỬI ======
         [HttpPost]
         public IActionResult Send(string content)
         {
-            Data.Messages.Add(new Message
+            if (!string.IsNullOrEmpty(content))
             {
-                Id = Data.Messages.Count + 1,
-                Sender = "Customer",
-                Content = content
-            });
+                _context.Messages.Add(new Message
+                {
+                    Sender = "Customer",
+                    Content = content
+                });
+
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
 
+        // ====== SUPPORT TRẢ LỜI ======
         [HttpPost]
         public IActionResult Reply(string content)
         {
-            Data.Messages.Add(new Message
+            if (!string.IsNullOrEmpty(content))
             {
-                Id = Data.Messages.Count + 1,
-                Sender = "Support",
-                Content = content
-            });
+                _context.Messages.Add(new Message
+                {
+                    Sender = "Support",
+                    Content = content
+                });
+
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
