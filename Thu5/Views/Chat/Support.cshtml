@@ -1,0 +1,19 @@
+﻿@model List<Thu5.Models.Message>
+
+<h2>Nhân viên hỗ trợ</h2>
+
+<div style="height:300px; overflow:auto; border:1px solid black; padding:10px;">
+    @foreach (var msg in Model)
+    {
+        <p><b>@msg.Sender:</b> @msg.Content</p>
+    }
+</div>
+
+<form method="post" action="/Chat/Reply">
+    <input name="content" placeholder="Trả lời..." />
+    <button type="submit">Gửi</button>
+</form>
+
+<script>
+    setTimeout(() => location.reload(), 3000);
+</script>

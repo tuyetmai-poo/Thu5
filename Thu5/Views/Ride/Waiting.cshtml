@@ -4,9 +4,25 @@
 
 <p>@Model.Pickup → @Model.Destination</p>
 <p>Trạng thái: @Model.Status</p>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<div id="map" style="height:400px;"></div>
+
+<script>
+    var map = L.map('map').setView([21.0285, 105.8542], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'OSM'
+    }).addTo(map);
+
+    // marker
+    L.marker([21.0285, 105.8542]).addTo(map)
+        .bindPopup('Điểm đón').openPopup();
+</script>
 
 <!-- GOOGLE MAPS ROUTE -->
-<iframe width="100%"
+@* <iframe width="100%"
         height="400"
         style="border:0"
         loading="lazy"
@@ -15,7 +31,7 @@
   &origin=@Model.CustomerLat,@Model.CustomerLng
   &destination=@Model.DestinationLat,@Model.DestinationLng
   &mode=driving">
-</iframe>
+</iframe> *@
 
 <script>
     setTimeout(() => {

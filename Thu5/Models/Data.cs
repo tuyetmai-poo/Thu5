@@ -9,5 +9,7 @@
         };
 
         public static List<Ride> Rides = new List<Ride>();
+        public static List<Message> Messages = new List<Message>();
+        public static List<User> Users = new List<User>();
     }
 }

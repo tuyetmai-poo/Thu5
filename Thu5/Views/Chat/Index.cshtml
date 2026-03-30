@@ -1,0 +1,32 @@
+﻿@model List<Thu5.Models.Message>
+
+<h2>Hỗ trợ khách hàng</h2>
+
+<div style="border:1px solid black; height:300px; overflow:auto; padding:10px;">
+    @foreach (var msg in Model)
+    {
+        if (msg.Sender == "Customer")
+        {
+            <p style="text-align:right; color:blue;">
+                <b>Bạn:</b> @msg.Content
+            </p>
+        }
+        else
+        {
+            <p style="text-align:left; color:green;">
+                <b>Support:</b> @msg.Content
+            </p>
+        }
+    }
+</div>
+
+<form method="post" action="/Chat/Send">
+    <input name="content" placeholder="Nhập tin nhắn..." style="width:70%;" />
+    <button type="submit">Gửi</button>
+</form>
+
+<script>
+    setTimeout(() => {
+        location.reload();
+    }, 3000);
+</script>
